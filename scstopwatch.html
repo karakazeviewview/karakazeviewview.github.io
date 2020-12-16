@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>SundayCode</title>
+</head>
+<body>
+<h1>ストップウォッチを作ろう</h1>
+まずはデスクトップに「StopWatch」フォルダを作る。
+<pre><code>
+
+
+ファイル名「index.html」 階層構造 /StopWatch/index.html
+
+<xmp>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>Stopwatch</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="container">
+    <div id="timer">00:00.000</div>
+    <div class="controls">
+      <div class="btn" id="start">Start</div>
+      <div class="btn" id="stop">Stop</div>
+      <div class="btn" id="reset">Reset</div>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
+</xmp>
+
+
+ファイル名「styles.css」 階層構造 /StopWatch/css/styles.css
+
+
+body {
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  background: #eee;
+}
+
+.container {
+  margin: 20px auto;
+  width: 270px;
+  background: #fff;
+  padding: 15px;
+  text-align: center;
+}
+
+#timer {
+  background: #ddd;
+  height: 118px;
+  line-height: 118px;
+  font-size: 40px;
+  margin-bottom: 15px;
+}
+
+.btn {
+  width: 80px;
+  height: 45px;
+  line-height: 45px;
+  background: #ddd;
+  font-weight: bold;
+  cursor: pointer;
+  user-select: none;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+}
+
+.inactive {
+  opacity: 0.6;
+}
+
+
+ファイル名「main.js」 階層構造 /StopWatch/js/main.jsl
+
+'use strict';
+
+{
+  const timer = document.getElementById('timer');
+  const start = document.getElementById('start');
+  const stop = document.getElementById('stop');
+  const reset = document.getElementById('reset');
+
+  let startTime;
+  let timeoutId;
+  let elapsedTime = 0;
+
+  function countUp() {
+    const d = new Date(Date.now() - startTime + elapsedTime);
+    const m = String(d.getMinutes()).padStart(2, '0');
+    const s = String(d.getSeconds()).padStart(2, '0');
+    const ms = String(d.getMilliseconds()).padStart(3, '0');
+    timer.textContent = `${m}:${s}.${ms}`;
+
+    timeoutId = setTimeout(() => {
+      countUp();
+    }, 10);
+  }
+
+  function setButtonStateInitial() {
+    start.classList.remove('inactive');
+    stop.classList.add('inactive');
+    reset.classList.add('inactive');
+  }
+
+  function setButtonStateRunning() {
+    start.classList.add('inactive');
+    stop.classList.remove('inactive');
+    reset.classList.add('inactive');
+  }
+
+  function setButtonStateStopped() {
+    start.classList.remove('inactive');
+    stop.classList.add('inactive');
+    reset.classList.remove('inactive');
+  }
+
+  setButtonStateInitial();
+
+  start.addEventListener('click', () => {
+    if (start.classList.contains('inactive') === true) {
+      return;
+    }
+    setButtonStateRunning();
+    startTime = Date.now();
+    countUp();
+  });
+
+  stop.addEventListener('click', () => {
+    if (stop.classList.contains('inactive') === true) {
+      return;
+    }
+    setButtonStateStopped();
+    clearTimeout(timeoutId);
+    elapsedTime += Date.now() - startTime;
+  });
+
+  reset.addEventListener('click', () => {
+    if (reset.classList.contains('inactive') === true) {
+      return;
+    }
+    setButtonStateInitial();
+    timer.textContent = '00:00.000';
+    elapsedTime = 0;
+  });
+}
+
+</code></pre>
+<li><a href="scindex.html">喫茶店で日曜コード目次に戻る</a></li>　
+<li><a href="scomikuji.html">日曜コード:おみくじに進む</a></li>　
+<li><a href="scbingo.html">日曜コード:ビンゴシートに進む</a></li>　
+
+
+
+
+
+  <p><a href="index.html">ココンカ塾サイトマップに戻る</a></p>
+  　<li><a href="index2.php">質問&自作問題投稿</a></li>　　
+</body>
+</html>

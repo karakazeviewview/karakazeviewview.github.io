@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>SundayCode</title>
+</head>
+<body>
+
+ <h1>オブジェクト指向トレーニング </h1>
+まずはひたすら写経し、どんどんメールフォームから質問して欲しい。
+オブジェクト指向に共通するプログラムの組み立て方として言えるのが、まず大筋から必要と思われるクラスを全て作る、そのクラスで想定通り動かすためにどんなメソッドが必要かを考える、コンストラクタで具体的なメソッドの中身を書き込んでいく、Mainメソッドでそれらを制御する、という流れだ。今回のファイルは、「Box.java」「BoxApp.java」の2つを作って行こう。
+
+ <pre><code>
+  「Box.java」    
+  
+  import java.util.*;
+  public class Box{
+    private String color;
+    private String shape;
+    private int num;
+    private static int totalNumber;
+    private static int count;
+    private int no;
+  
+    public Box(String color,String shape,int num){
+      this.color=color;
+      this.shape=shape;
+      this.num=num;
+      this.totalNumber+=num;
+      this.boxNum(count);
+      count++;
+    }
+  
+    public void boxNum(int no){
+      this.no=no;
+    }
+    public void insertBalls(int ball){
+      System.out.printf("%d個のボールを入れました。%n",ball);
+      this.num+=ball;
+      this.totalNumber+=ball;
+    }
+  
+    public void removeBalls(int ball){
+      if(this.num>ball){  
+        System.out.printf("%d個のボールを取り出しました。%n",ball);
+        this.num-=ball;
+        this.totalNumber-=ball;
+      }else{
+        System.out.printf("%d個のボールを取り出しました。%n",this.num);
+        this.num=0;
+      }  
+    }
+  
+    public void displayInfo(){
+    }
+  
+    static void displayTotalNumber(){
+      System.out.printf("ボールの合計は%d個です。%n",totalNumber);
+    }
+  
+    @Override
+      public String toString(){
+        return String.format("%d---色:%s,形:%s,個数:%d%n",this.no,this.color,this.shape,this.num);
+      }  
+  }
+  
+
+ 「BoxApp.java」 
+                                                                              X
+  import java.util.*;
+  public class BoxApp{
+    public static void main(String[] args){
+      Box box1=new Box("赤","円形",1);
+      Box box2=new Box("青","四角",2);
+      Scanner sc=new Scanner(System.in);
+      while(true){
+        System.out.print("1.ボール投入 / 2.ボール取出 / 3.ボール総数表示 / 4.終了>");
+        int index=sc.nextInt();
+        switch(index){
+          case 1:
+          System.out.println(box1);
+          System.out.println(box2);
+          System.out.print("ボールを投入する箱の番号を入力してください>");
+          int addIndex=sc.nextInt();
+          if(addIndex==0){
+            System.out.print("投入するボールの個数を入力してください>");
+            int addNum=sc.nextInt();
+            box1.insertBalls(addNum);
+          }else if(addIndex==1){
+            System.out.print("投入するボールの個数を入力してください>");
+            int addNum=sc.nextInt();
+            box2.insertBalls(addNum);
+          }else{
+            continue;
+          }      
+          break;
+          case 2:
+          System.out.println(box1);
+          System.out.println(box2);
+          System.out.print("ボールを取り出す箱の番号を入力してください>");
+          int rmIndex=sc.nextInt();
+          System.out.print("取り出すボールの個数を入力してください>");
+          int rmNum=sc.nextInt();
+          if(rmIndex==1){
+            box1.removeBalls(rmNum);
+          }else if(rmIndex==2){
+            box2.removeBalls(rmNum);
+          }else{
+            continue;
+          }
+          break;
+          case 3:
+          Box.displayTotalNumber();
+          break;
+          default:
+          System.out.println("アプリケーションを終了します。");
+          return;
+        }  
+      }
+    }
+  }
+    
+</code></pre>
+
+  <p>
+
+  </p>
+  <p><a href="javaindex.html">Javaを学ぼう目次へ進む</a></p><br>  
+  <p><a href="sc1.html">日曜コードJavaScriptへ進む</a></p><br>
+  
+
+  <p><a href="scindex.html">喫茶店で日曜コード目次へ戻る</a></p>
+  　<li><a href="index2.php">質問&自作問題投稿</a></li>　　
+</body>
+</html>

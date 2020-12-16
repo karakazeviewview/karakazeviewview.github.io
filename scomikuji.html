@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>おみくじ</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <pre>
+          <code>
+<xmp>
+「ファイル名、index.html」
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>SundayCode</title>
+</head>
+<body>
+  <h1>JavaScriptの学習</h1>
+  <pre>
+    <code>
+      <!DOCTYPE html>
+      <html lang="ja">
+      <head>
+        <meta charset="utf-8">
+        <title>おみくじ</title>
+        <link rel="stylesheet" href="css/styles.css">
+      </head>
+      <body>
+        <div id="btn">運勢は…</div>       
+        <script src="js/main.js"></script>
+      </body>
+      </html>            
+    </xmp>      
+「ファイル名、styles.css」
+
+      body {
+        background: #efefef;
+      }
+      
+      #btn {
+        width: 200px;
+        height: 200px;
+        background: #ef454a;
+        border-radius: 50%;
+        margin: 30px auto;
+        text-align: center;
+        line-height: 200px;
+        color: #fff;
+        font-weight: bold;
+        font-size: 42px;
+        cursor: pointer;
+        box-shadow: 0 10px 0 #d1483e;
+        user-select: none;
+      }
+      
+      #btn:hover {
+        opacity: 0.9;
+      }
+      
+      #btn:active {
+        box-shadow: 0 5px 0 #d1483e;
+        margin-top: 35px;
+      }
+      
+      
+
+
+      「ファイル名、main.js」
+      
+      'use strict';      
+      {
+        const btn = document.getElementById('btn');      
+        btn.addEventListener('click', () => {
+          // const results = ['大吉', '中吉', '凶', '末吉'];
+          // const results = ['大吉', '大吉', '大吉', '大吉', '凶'];
+          // btn.textContent = results[Math.floor(Math.random() * results.length)];
+          const n = Math.random();
+          if (n < 0.05) {
+            btn.textContent = '大吉'; // 5%
+          } else if (n < 0.2) {
+            btn.textContent = '中吉'; // 15%
+          } else {
+            btn.textContent = '凶'; // 80%
+          }
+        });
+      }
+    </code>
+    </pre>
+
+  解説:<br>
+  今回のポイントは以下の5点。
+
+  <li>文章や画像など目に見えるものは「body」タグに書く </li>
+  <li>ファイル構造</li>
+  <li>cssでどのような装飾ができるか</li>
+  <li>jsで、ボタンという元々備わった機能を使う</li>
+  <li>確率の考え方と設定の仕方 </li>
+
+  まずHTMLは、人間のように頭と体があるから、書き順は必ず
+  <xmp>
+  <html lang="ja"></html>と書いて開き、
+
+  <head></head>と書いて開き、
+
+  <body></body>
+  </xmp>
+  と書いて開くという、「タグ閉じ」の癖をつけよう。cssで値を変えれるところを色々といじってみよう。またindex.htmlファイルの「?」を「運勢は…」などに変えたりするのも良いだろう。control+sでセーブしてブラウザを更新すると、見た目が変わるはずだ。
+  JavaScriptに備わっている機能から、.addEventListener('click'で、クリックするとイベントが起きる。確率は、if~else~、「もし〜ならこうして、さもなくば〜する」という文章で書く。他には、while文、for文、switch文などがある。喫茶店で日曜コード目次のメールフォーム「質問&自作問題投稿」からどんどん質問してほしい。<br>千里の道も一歩から、ときに頑張り、楽しく旅して行こう!
+
+  
+  <p><a href="https://home.jeita.or.jp/is/highschool/algo/">息抜きにおすすめ:アルゴリズムをゲームで学ぶ、アルゴロジック</a></p>
+
+  <p><a href="scindex.html">喫茶店で日曜コード目次に戻る</a></p>
+  <p><a href="index.html">ココンカ塾サイトマップに戻る</a></p>
+
+  <li><a href="index2.php">質問&自作問題投稿</a></li>　　
+</body>
+
+</html>

@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>SundayCode</title>
+</head>
+<body>
+  <h1>javaを学ぼう</h1>
+javaは、C言語という汎用性の高い言語の長所を受け継いでいる。厳密さが特徴であり、また他の言語にも応用が効くので、今後Pythonなど言語をさらに学んでいきたい人の入門としてふさわしいと言えるだろう。まず最初のうちはひたすら写経して、疑問点をどんどん質問フォームから送って欲しい。
+  
+
+<xmp><code>
+  20201210木曜
+1時間目
+Boxの解答
+ブロック要素
+円は絶対配置
+position relative
+黄色が円の親
+input 3 output 7
+
+2時間目
+HTML、css yellow red解説
+p618イテレータ反復
+
+フィールドで値、どこからでもアクセスできる
+
+whileで、次のがあるの？の繰り返し。
+
+arraylistは配列の要素がほとんどで、途中で要素を抜かれると玉突き。処理が大変。何番目を取り出す、などは得意。
+
+linkedlistは、僕の次が誰、という情報を持つ。だから、途中の要素がなくなっても、僕の次が変わるだけで済む。
+
+  import java.util.*;
+  public class IteratorLesson{
+    public static void main(String[] args){
+      ArrayList<String> names=new ArrayList<String>();
+      names.add("ミナト");
+      names.add("朝霞");
+      names.add("菅原");
+       
+      Iterator<String> it=name.Iterator();
+      while(it.hasNext()){
+        String e=it.next();
+        System.out.println(e);
+      }
+      printList(names);
+    }
+   
+    public static void printList(List<String>list){
+      for(String s:list){
+        System.out.println(s);
+      }
+    }
+  }
+
+
+
+
+3時間目
+set関連のクラス
+
+import java.util*; 
+   public class SetLesson{   
+     public static void main(String[] args){
+       Set<String> colors=new HashSet<String>();
+       colors.add("赤");        
+       colors.add("青"); 
+       colors.add("黄");
+       colors.add("赤");  
+       System.out.println("色は"+colors.size()+"種類");      
+      for(String s:colors){                    
+        System.out.println(s);                                             
+      }                                        
+      Set<String> words=new TreeSet<String>();                
+      words.add("dog");                           
+      words.add("cat");                
+      words.add("wolf");                
+      words.add("panda");        
+      for(String s:words){        
+        System.out.println(s+"->");               
+      }          
+      Set<Integer> nums=new LinkedHashSet<Integer>();  
+      nums.add(1);              
+      nums.add(3);   
+      nums.add(2);
+      nums.add(11);
+      nums.add(6);
+      for(int i:nums)
+      {                          
+      System.out.println(i);                  
+      }                                         
+    }                                           
+  }               
+
+                                                                      
+赤,青,黄,青,緑,緑,黒,白,青,ピンク,黄緑,白
+何種類の色が存在するか？
+黒は含まれているか？
+を調べる処理をかけ
+
+import java.util.*;
+public class SetTest{
+	public static void main(String[] args){
+		String str="赤,青,黄,青,緑,緑,黒,白,青,ピンク,黄緑,白";
+		String[] data=str.split(",");
+		//listからsetを生成
+		//Set<String> set=new HashSet<>(Arrays.asList(data));
+		Set<String> set=new HashSet<>();
+		for(String s:data){
+			set.add(s);
+		}
+		System.out.println(set.size());
+		System.out.println(set.contains("黒") ? "yes":"no");
+		//setからlistを生成
+		List<String> list=new ArrayList<>(set);
+		System.out.println(list.get(0));
+	}
+}
+
+
+4時間目
+
+import java.util.*;
+public class SetTest2{
+	public static void main(String[] args){
+		String[] strArray = new String[]{
+				"emhjopwxaz",
+				"ykxfjihxvv",
+				"oqsuoeojku",
+				"stvzdzdplo",
+				"ftrmgkauna",
+				"ackzqxlchf",
+				"dqttpisosm",
+				"kfcrgfxenb",
+				"vwappsvdld",
+				"gvovlddccr",
+				"ybaoyevbsl",
+				"thhujdjaqk",
+				"luxrfzmlyz",
+				"zpewohxhvc",
+				"whcddsgogv",
+				"hzyjmgrbxw",
+				"mjmxnxawrw",
+				"hdndjktido",
+				"vymqiltdzq"
+		};
+		Set<String> set=new TreeSet<>(Arrays.asList(strArray));
+		//System.out.println(set);	
+		List<String> list=new ArrayList<>(set);
+		System.out.println(list.get(list.size()-1));
+		Iterator<String> it=list.iterator();
+		while(it.hasNext()){
+			String s=it.next();
+			if(s.startsWith("m")){
+				it.remove();
+			}
+		}
+		System.out.println(list);
+	}
+}
+
+
+
+Q１
+メソッド内で、所持金総額から
+財布を表すクラスWallet、自動販売機を表すクラスVendingMachineを作成し、各操作ができるプログラムを作成する。
+■一般クラス：Wallet
+＜フィールド変数(field)＞
+private int money 現在の財布の中身
+
+＜コンストラクタ(constructor)＞
+public Wallet(int money)
+…　財布の中身の初期値を指定してインスタンスを生成
+　　ただし引数moneyの値がマイナスの場合は0円とする
+
+＜メソッド(method)＞
+insertMoney
+…　引数に指定された金額を財布に入れる
+takeOutMoney
+…　引数に指定された金額を財布から取り出す
+　　ただし金額が不足する場合は財布内の全額を取り出す
+display
+…　現在の財布の中身を表示する
+
+■一般クラス：VendingMachine
+＜フィールド変数(field)＞
+private int money 投入された金額
+private int num 商品の個数
+
+＜コンストラクタ(constructor)＞
+public VendingMachine(int n)
+…　商品の個数を指定してインスタンスを生成
+　　投入金額の初期値は0円とする
+
+＜一般メソッド(method)＞
+insertCoins 機能
+…　引数に指定された金額だけ自動販売機に投入する
+cancel
+…　現在の投入額を釣り銭として返却する
+purchase
+…　100円の商品を1個購入する
+　　投入金額不足や売切れの場合はその旨を表示する。
+insertGoods
+…　引数に指定された個数だけ商品を投入する。
+
+■アプリケーションクラス
+・中身の初期値が1,000円の財布を1個生成する
+・商品の個数が3個の自動販売機を1個生成する
+各機能
+(1) 硬貨投入 財布から指定金額を取り出して自動販売機に投入する
+(2) 商品購入 自動販売機で商品1個を購入して釣り銭を財布に戻す
+(3) 硬貨取出 自動販売機に投入した金額を取り出して財布に戻す
+(4) 商品投入 自動販売機に指定した個数だけ商品を補充する
+(5) 所持金表示 現在の財布の中身を表示する
+
+[実行例]
+
+ソースを表示印刷SyntaxHighlighterについて
+現在の入金額：0円
+1. 硬貨投入 / 2. 商品購入 / 3. 硬貨取出 / 4.商品投入 / 5.所持金表示 / 6.終了>5
+現在の財布の中身：1000円
+ 
+1. 硬貨投入 / 2. 商品購入 / 3. 硬貨取出 / 4.商品投入 / 5.所持金表示 / 6.終了>1
+投入する金額を入力して下さい > 100
+財布から100円取り出しました。
+現在の入金額：100円
+ 
+1. 硬貨投入 / 2. 商品購入 / 3. 硬貨取出 / 4.商品投入 / 5.所持金表示 / 6.終了>5
+現在の財布の中身：900円
+ 
+1. 硬貨投入 / 2. 商品購入 / 3. 硬貨取出 / 4.商品投入 / 5.所持金表示 / 6.終了>2
+現在の入金額：0円
+財布に0円入れました。
+ 
+1. 硬貨投入 / 2. 商品購入 / 3. 硬貨取出 / 4.商品投入 / 5.所持金表示 / 6.終了>5
+現在の財布の中身：900円
+ 
+1. 硬貨投入 / 2. 商品購入 / 3. 硬貨取出 / 4.商品投入 / 5.所持金表示 / 6.終了>1
+投入する金額を入力して下さい > 150
+財布から150円取り出しました。
+現在の入金額：150円
+ 
+1. 硬貨投入 / 2. 商品購入 / 3. 硬貨取出 / 4.商品投入 / 5.所持金表示 / 6.終了>5
+現在の財布の中身：750円
+ 
+1. 硬貨投入 / 2. 商品購入 / 3. 硬貨取出 / 4.商品投入 / 5.所持金表示 / 6.終了>3
+現在の入金額：0円
+財布に150円入れました。
+ 
+1. 硬貨投入 / 2. 商品購入 / 3. 硬貨取出 / 4.商品投入 / 5.所持金表示 / 6.終了>5
+現在の財布の中身：900円
+ 
+1. 硬貨投入 / 2. 商品購入 / 3. 硬貨取出 / 4.商品投入 / 5.所持金表示 / 6.終了>1
+投入する金額を入力して下さい > 150
+財布から150円取り出しました。
+現在の入金額：150円
+ 
+1. 硬貨投入 / 2. 商品購入 / 3. 硬貨取出 / 4.商品投入 / 5.所持金表示 / 6.終了>5
+現在の財布の中身：750円
+ 
+1. 硬貨投入 / 2. 商品購入 / 3. 硬貨取出 / 4.商品投入 / 5.所持金表示 / 6.終了>2
+現在の入金額：0円
+財布に50円入れました。
+ 
+1. 硬貨投入 / 2. 商品購入 / 3. 硬貨取出 / 4.商品投入 / 5.所持金表示 / 6.終了>6
+アプリケーションを終了します。
+
+
+
+statcメソッド（クラスが持つメソッド）に対するものとして、instanceメソッド（インスタンスが持つメソッド）がある。
+他に抽象メソッドがある。
+
+
+オブジェクトとは、物の特性や動きをまとめた箱のようなもの。
+プロパティは性質。メソッドは動き。
+
+クラスは、とある共通のものの特性や動作を保存している金型のようなもの。オブジェクトの共通点をまとめている。
+
+インスタンスは、クラスの持つ特性に基づいて生成される実体。
+
+コンストラクタとは、インスタンス生成のための関数。
+インスタンス生成時に呼び出される、特別なメソッド。
+
+コンストラクタの引数指定が、オーバーロード。
+同名コンストラクタを、引数が違う状態で再度呼び出している。
+thisは、このクラスの、という意味で、コンストラクタの引数の変数名か、このクラスのメンバ変数銘菓を区別するためにつける。つまりこのクラスのコンストラクタの引数の変数であるという意味。
+
+Q１
+1.以下のように箱を表すクラスBoxを定義する。
+■一般クラス：Box
+
+＜フィールド＞
+private String color 箱の色
+private String shape 箱の形
+private int num 箱の中のボールの数
+private static int totalNumber すべての箱のボールの総数
+<コンストラクタ>
+public Box(String color,String shape,int num){
+処理
+}
+＜メソッド＞
+insertBalls
+…　引数として渡された個数のボールを箱に入れる
+removeBalls
+…　引数として渡された個数のボールを箱から取り出す
+　　個数が不足する場合はすべてのボールを取り出す
+displayInfo
+…　箱の色・形、ボールの数を表示する
+static displayTotalNumber
+…　すべての箱のボールの総数を表示する
+
+2.BoxAppクラスを作成し、「赤、円形、１」「青、四角、２」でBoxクラスのインスタンスを２つnewして以下の処理を実現せよ。
+
+[実行例]
+
+
+5時間目
+
+1. ボール投入 / 2. ボール取出 / 3. ボール総数表示 / 4. 終了>1
+0---色：赤, 形：円形, 個数：1
+1---色：青, 形：四角, 個数：2
+ボールを投入する箱の番号を入力して下さい > 1
+投入するボールの個数を入力して下さい > 2
+2個のボールを入れました。
+ 
+1. ボール投入 / 2. ボール取出 / 3. ボール総数表示 / 4. 終了>3
+ボールの合計は5個です。
+ 
+1. ボール投入 / 2. ボール取出 / 3. ボール総数表示 / 4. 終了>2
+0---色：赤, 形：円形, 個数：1
+1---色：青, 形：四角, 個数：4
+ボールを取り出す箱の番号を入力して下さい > 0
+取り出すボールの個数を入力して下さい > 2
+1個のボールを取り出しました。
+ 
+1. ボール投入 / 2. ボール取出 / 3. ボール総数表示 / 4. 終了>1
+0---色：赤, 形：円形, 個数：0
+1---色：青, 形：四角, 個数：4
+ボールを投入する箱の番号を入力して下さい > 2
+箱の番号の入力が誤っています。
+ 
+1. ボール投入 / 2. ボール取出 / 3. ボール総数表示 / 4. 終了>4
+アプリケーションを終了します。
+Boxクラス
+
+public class Box {
+  private String color;
+  private String shape;
+  private int num;
+  private static int totalNumber;
+   
+  public Box(String color,String shape,int num){
+    this.color=color;
+    this.shape=shape;
+    this.num=num;
+    totalNumber+=num;
+  }
+   
+  public void insertBalls(int num){
+    this.num+=num;
+    totalNumber+=num;
+    System.out.printf("%d個のボールを入れました。%n",num);
+     
+  }
+  public void removeBalls(int num){
+    int n=this.num > num ? num:this.num;
+    this.num-=n;
+    totalNumber-=n;
+    System.out.printf("%d個のボールを取り出しました。%n",n);
+  }
+  public void displayInfo(){
+    System.out.printf("色：%s, 形：%s, 個数：%d%n", this.color,this.shape,this.num);
+  }
+  public static void displayTotalNumber(){
+    System.out.printf("ボールの合計は%d個です。%n",Box.totalNumber);
+  }
+}
+アプリケーションクラス
+●配列を使わない
+
+import java.util.Scanner;
+public class BoxApp {
+  public static void main(String[] args) {
+    Scanner scan = new Scanner(System.in);
+    Box box1 = new Box("赤", "円形", 1);
+    Box box2 = new Box("青", "四角", 2);
+    while (true) {
+      System.out.print("1. ボール投入 / 2. ボール取出 / 3. ボール総数表示 / 4. 終了>");
+      int select = scan.nextInt();
+      if (select ==1 || select==2) {
+        System.out.print("0---");
+        box1.displayInfo();
+        System.out.print("1---");
+        box2.displayInfo();
+      }
+      switch (select) {
+      case 1:
+        System.out.print("ボールを投入する箱の番号を入力してください>");
+        int boxNumber = scan.nextInt();
+        if(!(boxNumber == 0 || boxNumber==1)){
+          System.out.println("箱の番号の入力が誤っています。");        
+        }else{
+          System.out.print("投入するボールの個数を入力してください>");
+          int ballNum = scan.nextInt();
+          if (boxNumber == 0) {
+            box1.insertBalls(ballNum);
+          } else {
+            box2.insertBalls(ballNum);
+          }   
+        } 
+        break;
+      case 2:
+        System.out.print("ボールを取り出す箱の番号を入力してください>");
+        boxNumber = scan.nextInt();
+        if(!(boxNumber == 0 || boxNumber==1)){
+          System.out.println("箱の番号の入力が誤っています。");        
+        }else{
+          System.out.print("取り出すボールの個数を入力してください>");
+          int ballNum = scan.nextInt();
+          if (boxNumber == 0) {
+            box1.removeBalls(ballNum);
+          } else {
+            box2.removeBalls(ballNum);
+          }   
+        } 
+        break;
+      case 3:
+        Box.displayTotalNumber();
+        break;
+      default:
+        System.out.println("アプリケーションを終了します。");
+        scan.close();
+        return;
+      }
+    }
+  }
+}
+●配列を使う
+
+import java.util.Scanner;
+public class BoxApp2 {
+  private static Box[] boxes = { new Box("赤", "円形", 1), new Box("青", "四角", 2) };
+  public static void main(String[] args) {
+    Scanner scan = new Scanner(System.in);
+    while (true) {
+      System.out.print("1. ボール投入 / 2. ボール取出 / 3. ボール総数表示 / 4. 終了>");
+      int select = scan.nextInt();
+      switch (select) {
+      case 1:
+        displayInfo();
+        System.out.print("ボールを投入する箱の番号を入力して下さい >");
+        int index = scan.nextInt();
+        if (index < 0 || index >= boxes.length) {
+          System.out.println("箱の番号の入力が誤っています。");
+          continue;
+        }
+        System.out.print("投入するボールの個数を入力して下さい >");
+        int num = scan.nextInt();
+        boxes[index].insertBalls(num);
+        break;
+      case 2:
+        displayInfo();
+        System.out.print("ボールを取り出す箱の番号を入力して下さい >");
+        index = scan.nextInt();
+        if (index < 0 || index >= boxes.length) {
+          System.out.println("箱の番号の入力が誤っています。");
+          continue;
+        }
+        System.out.print("取り出すボールの個数を入力して下さい >");
+        num = scan.nextInt();
+        boxes[index].removeBalls(num);
+        break;
+      case 3:
+        Box.displayTotalNumber();
+        break;
+      case 4:
+        System.out.println("アプリケーションを終了します。");
+        scan.close();
+        return;
+      }
+    }
+  }
+ 
+  public static void displayInfo() {
+    for (int i = 0; i < boxes.length; i++) {
+      System.out.print(i + "---");
+      boxes[i].displayInfo();
+    }
+  }
+ 
+}
+</code></xmp>
+
+
+<p><a href="javadevenv.html">Javaの環境構築</a></p>
+  <p><a href="javacalccont.html">四則演算と制御文</a></p>
+  <p><a href="javaobjindex.html">オブジェクト指向</a></p>
+  <p><a href="javarpgindex.html">JavaでRPG</a></p>
+  <p><a href="javaobjapi.html">JavaのAPI活用</a></p>
+
+  <p><a href="javaq.html">Java問題集</a></p>
+  <p><a href="index.html">ココンカ塾サイトマップに戻る</a></p>
+
+  　<li><a href="index2.php">質問&自作問題投稿</a></li>　　
+</body>
+</html>

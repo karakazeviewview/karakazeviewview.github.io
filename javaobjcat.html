@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>SundayCode</title>
+</head>
+<body>
+<pre><code>
+  import java.util.*;
+public class Cat{
+	static final String[] types={"A","B","C"};
+	String type;
+	String name;
+	int intimacy;
+	public Cat(){
+		int character=new Random().nextInt(types.length);
+		this.type=types[character];//typesのランダム番目
+		System.out.printf("%s-type cat appeared!%n",this.type);//猫のタイプを出力
+		this.setName();//メソッド呼び出し
+	}
+	public void setName(){
+		System.out.print("Please name this cat>");
+		this.name=new Scanner(System.in).next();
+		System.out.printf("%s jointed!%n",this.name);
+	}
+	public void catPlay(){
+		System.out.printf("Playing with %s%n",this.name);
+		System.out.println("...");
+		System.out.println("Intimacy is up!!");
+		this.intimacy++;
+	}
+	public String getName(){
+		return this.name;
+	}
+	public int getIntimacy(){
+		return this.intimacy;
+	}
+	public String getType(){
+		return this.type;
+	}
+}
+
+
+
+import java.util.*;
+public class CatApp{
+	public static void main(String[] args){
+		System.out.println("***Cat Collection***");
+		List<Cat> cats=new ArrayList<>();//リストインターフェイスにCat型を入れる,ArrayListが汎用性が低いため
+		Scanner sc=new Scanner(System.in);//スキャナーのnewをする
+		while(true){
+			System.out.print("1.Collect 2.Play 3.End>");
+			int act=sc.nextInt();
+			switch(act){
+				case 1:
+					cats.add(new Cat());//catsのArrayListの中身をaddして、newしたCatクラスのコンストラクタ
+					break;
+				case 2:
+					if(cats.isEmpty()){//catsのリストの中をからかどうか判定し、空だったら実行
+						System.out.println("You do not have anyone to play with.");
+						continue;//スキップしてファイルの判定の部分に戻る
+					}
+					for(int i=0;i<cats.size();i++){
+						System.out.printf("%d・・・%s[%s](%d)%n",i,cats.get(i).getName(),cats.get(i).getType(),cats.get(i).getIntimacy());//catsアレイリストのゲットメソッドを使って、i番目の要素を取り出す
+					}
+					System.out.print("Who do you play with?>");
+					int playWith=sc.nextInt();
+					if(playWith < cats.size()){
+						cats.get(playWith).catPlay();
+					}else{
+						System.out.println("Select exits number please!!! ");
+					}
+					break;
+				default :
+					System.out.println("Game over");
+					return;
+			}
+		}
+	}
+}
+</code></pre>
+  <p><a href="javaindex.html">javaを学ぼう目次に戻る</a></p>
+
+
+  <p><a href="javaobjindex.html">オブジェクト指向へ戻る</a></p>
+  　<li><a href="index2.php">質問&自作問題投稿</a></li>　　
+</body>
+</html>

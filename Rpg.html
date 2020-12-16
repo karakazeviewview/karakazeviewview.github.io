@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>SundayCode</title>
+</head>
+<body>
+  <h1>RPG制作</h1>
+JavaでテキストベースのRPGを作ろう。<br>
+RPGつまりロールプレイングゲームの最初期の形はコンピュータを使わず、ストーリーのシナリオ、イベントや戦闘の成否を判定する計算式とサイコロに鉛筆、コマとなるミニフィギュア、などから成立していた。これらを語り部たるゲームマスターが取りまとめ、何人かの参加者たちは竜を退治する騎士にあるいは肉体改造したドラッグディーラーに自己投影する。<br>
+しかし、複数人でなければできない点、またことあるごとに紙と鉛筆とサイコロで計算しなければならない点、これらをコンピュータを使う事によって改良できないか?<br>
+ここからコンピュータRPGの歴史が始まり、ローグ、ウィザードリィ、ウルティマ、そして現在の最高峰スカイリムVRなどの名作が生まれた。<br>
+では、少しずつ作っていこう。
+まず最初に、必要なクラスを作る。今回はキャラクターであるArcherクラスと、そのキャラクターを動かすArcherAppクラスを、2枚のファイルにそれぞれ作ってみよう。
+
+<pre><code>
+「1枚目ファイル名:Archer.java」
+
+public class Archer{
+	private static int totalArcher;
+	private int no;
+	public Archer(){
+		totalArcher++;
+		this.no=totalArcher;
+		System.out.println("Archer"+this.no+"を生成しました");
+	}
+
+	public static int getTotalArcher(){
+		return totalArcher;
+	}
+
+	public void shootArrow(){
+		System.out.println("Archer"+this.no+"は矢を放った！");
+	}
+}
+
+
+「2枚目ファイル名:ArcherApp.java」
+
+import java.util.*;
+public class ArcherApp3{
+	public static void main(String[] args){
+		Scanner scan=new Scanner(System.in);
+		while(true){
+			System.out.print("操作を入力してください1...Archer生成,2...Archerの総数確認,3...Archer10人生成,4...終了>");
+			int select=scan.nextInt();
+			switch(select){
+				case 1:
+					new Archer();
+					break;
+				case 2:
+					System.out.println("Archerクラスから"+Archer.getTotalArcher()+"人のアーチャーが生成されました。");
+					break;
+				case 3:
+					System.out.println("アーチャー10人同時生成");
+					Archer[] archers=new Archer[10];
+					for(int i=0;i<archers.length;i++){
+						archers[i]=new Archer();
+					}
+					System.out.print("アーチャー番号を入力(1~10):");
+					int no=scan.nextInt();
+					archers[no-1].shootArrow();
+					break;
+				default:
+					System.out.println("終了");
+					scan.close();
+					return;
+			}
+		}
+	}
+}
+
+
+</code>/pre>
+
+完成したらコンパイルして実行してみよう。アーチャーを複数生成し、矢を撃たせることもできるはずだ。
+このように、味方キャラクター、敵キャラクター、武器、あらゆるものをまずはクラスとして作り進めていこう。
+
+
+
+
+
+  <li><a href="javarpgindex.html">RPG一覧へ戻る</a></li>　　
+
+  <li><a href="javarpgslime.html">スライムクラス</a></li>　　
+  
+  <p><a href="index.html">ココンカ塾サイトマップに戻る</a></p>
+  <li><a href="index2.php">質問&自作問題投稿</a></li>　　
+</body>
+</html>

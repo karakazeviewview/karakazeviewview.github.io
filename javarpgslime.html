@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>SundayCode</title>
+</head>
+<body>
+ 
+<pre><code>
+2.Slimeクラスを作成し以下の処理を実現せよ
+[実行例]
+ArrayListを使ってみよう！
+Listにスライムを追加していってみよう。
+スライムを追加する？(1…yes,2…no):1
+追加するスライムの名前を決めてね:スラリン
+スラリンが現れた！！
+スライムを追加する？(1…yes,2…no):1
+追加するスライムの名前を決めてね:スラキチ
+スラキチが現れた！！
+スライムを追加する？(1…yes,2…no):1
+追加するスライムの名前を決めてね:スラオ
+スラオが現れた！！
+スライムを追加する？(1…yes,2…no):2
+スラリンの攻撃:5ポイントのダメージを与えた!
+スラキチの攻撃:5ポイントのダメージを与えた!
+スラオの攻撃:5ポイントのダメージを与えた!
+
+
+ファイル名「SlimeApp.java」
+
+import java.util.*;
+public class SlimeApp{
+	public static void main(String[] args){
+		Scanner sc = new Scanner(System.in);
+		List<Slime> list=new ArrayList<>();
+		while(true){
+			System.out.print("スライムを追加する(1...yes,2...no):");
+			int select=sc.nextInt();
+			if(select==2){
+				break;
+			}
+			System.out.print("追加するスライムの名前を決めてね:");
+			String name=sc.next();
+			Slime slime=new Slime(name);
+			slime.appear();
+			list.add(slime);
+		}
+		for(Slime slime:list){
+			slime.attack();
+		}
+	}
+}
+class Slime{
+	String name;
+	Slime(String name){
+		this.name=name;
+	}
+	void appear(){
+		System.out.println(this.name+"が現れた!!");
+	}
+	void attack(){
+		System.out.printf("%sの攻撃:5ポイントのダメージを与えた!%n",this.name);
+	}
+}
+</code></pre>
+
+<p>解説:</p>
+ArrayListを使ってのSlimeクラスだ。
+<p><a href="javarpgindex.html">JavaでRPG目次へ戻る</a></p>
+
+<p><a href="javarpgarcher.html">アーチャークラス</a></p>
+
+<p><a href="index.html">ココンカ塾サイトマップに戻る</a></p>
+　<li><a href="index2.php">質問&自作問題投稿</a></li>　　
+</body>
+</html>

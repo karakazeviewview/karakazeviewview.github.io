@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>SundayCode</title>
+</head>
+
+<body>
+  <h1>Java問題集</h1>
+  <pre>
+<cord>
+  あなたは A のボタン、 B のボタンの 2 つのボタンを使うゲームを作っています。
+
+  このゲームではキャラクターを動かして遊びます。キャラクターははじめ座標 0 の位置にいて、A のボタンを押すとキャラクターが 1 マス右に進み (座標が 1 増える)、 B のボタンを押すとキャラクターが 1 マス左に進み (座標が 1 減る) ます。
+  
+  A, B のボタンそれぞれ何回押したが入力されるので、ボタンが全て押された後のキャラクターの位置の座標を出力するプログラムを作成してください。
+
+
+import java.util.*;
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String[] datas_s = sc.nextLine().split(" ");
+        //要素を整数型に変換
+        int[] datas = new int[datas_s.length];
+        for(int i = 0; i < datas_s.length; i++){
+        datas[i] = Integer.parseInt(datas_s[i]);
+        }
+    System.out.println(datas[0]-datas[1]);
+    }
+}
+
+
+  あなたは1対1で戦う競技の大会を開くことにしました。
+
+  N 人の選手で総当り対戦を行う場合、何回の対戦が行われるか出力して下さい。
+  N 人の総当り戦では N 人がそれぞれ自分自身以外と対戦します。
+  また、自分自身から見た結果と、相手側から見た結果があるので N × (N - 1) / 2で求められます。
+  
+  例えば 4 人の場合以下の様な表になり(斜線を軸とした線対称の位置の試合はそれぞれ同一試合です)
+
+入力例1
+4
+出力例1
+6
+
+  import java.util.*;
+  public class Main {
+      public static void main(String[] args) {
+          Scanner sc = new Scanner(System.in);
+          String N_s = sc.nextLine();
+          int N= Integer.parseInt(N_s);
+          System.out.println(N * (N - 1) / 2);
+      }
+  } 
+
+
+ある10進数の正の整数 n が与えられます。
+
+n が何桁かを数字で出力してください。
+入力例1
+100
+出力例1
+3
+
+import java.util.*;
+public class Main {
+      public static void main(String[] args) {
+          Scanner sc = new Scanner(System.in);
+          String n_s = sc.nextLine();
+          int n = Integer.parseInt(n_s); //整数型に変換
+          int valLen = String.valueOf( n ).length();    // 3が返される
+          System.out.println(valLen);
+      }
+  }
+
+
+
+半角アルファベットの小文字で構成された長さ n の文字列 s が与えられます。
+
+文字列 s を大文字に変換して出力して下さい。
+  
+  import java.util.*;
+  public class Main {
+      public static void main(String[] args) {       
+          Scanner sc = new Scanner(System.in);
+          String line = sc.nextLine();
+      System.out.println(line.toUpperCase());
+      }
+  }
+
+
+
+
+  -100から100までの整数 n が与えられるので、絶対値を出力して下さい。
+
+  例えば
+  -10
+  と入力された場合
+  
+  10
+  と出力して下さい。
+
+  import java.util.*;
+public class Main {
+    public static void main(String[] args) {
+        //入力値の読み込み 
+        Scanner sc = new Scanner(System.in);
+        // strの取得 
+        String n_s = sc.nextLine();
+        int n = Integer.parseInt(n_s); //整数型に変換
+        // 出力処理 
+        //System.out.println(n);
+        System.out.println(Math.abs(n));
+    }
+}
+   
+</cord>
+</pre>
+
+
+
+
+  <h1></h1>
+  <p><a href="javaobjindex.html">オブジェクト指向へ進む</a></p>
+
+
+  <p><a href="javaindex.html">javaを学ぼう目次へ戻る</a></p>
+  　<li><a href="index2.php">質問&自作問題投稿</a></li>　　
+</body>
+</html>
