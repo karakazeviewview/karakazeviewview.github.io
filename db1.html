@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>SundayCode</title>
+</head>
+<body>
+  <h1>MySQLの基本習得/h1>
+    SQLの開発環境を整えよう。<br>
+
+
+
+  <pre><code>
+    Windows10
+    windowsはxamppを使って行う。
+    https://itsakura.com/php-xampp
+    
+    MacOS
+    macはdockerを使って行う。
+    [インストール]
+    https://qiita.com/kurkuru/items/127fa99ef5b2f0288b81
+
+    環境が整ったなら以下の手順で学んでいこう。
+
+    //データベース作成
+    CREATE DATABASE myapp
+    DEFAULT CHARACTER SET utf8;
+    //データベース削除
+    DROP DATABASE IF EXISTS myapp;
+    //テーブル作成
+    CREATE TABLE members(
+      id INT PRIMARY KEY AUTO_INCREMENT,
+      name VARCHAR(30),
+      depart VARCHAR(20) DEFAULT '無所属',
+      age INT,
+      updated DATE
+    );
+    //テーブル削除
+    DROP TABLE IF EXISTS members;
+    //データ挿入
+    INSERT INTO members(id,name,depart,age,updated)
+    VALUES(1,'山田太郎','営業部',40,'2014-12-01');
+    //カラムを指定して挿入
+    INSERT INTO members(name,age)
+    VALUES('鈴木さくら',25);
+    //全カラムに対しての挿入はカラム名省略可
+    INSERT INTO members
+    VALUES(3,'佐藤次郎','人事部',35,'2015-01-15')
+    //連続入力
+    INSERT INTO members(name,depart,age)
+    VALUES
+    ('田中一郎','経理部',48),
+    ('山口弘子','営業部',28),
+    ('渡辺順二','人事部',58),
+    ('中島博之','総務部',49),
+    ('山下圭吾','経理部',23);
+    //SELECT
+    //全件抽出
+    SELECT * FROM members;
+    //nameカラム取得
+    SELECT name FROM members;
+    //name,ageカラム取得
+    SELECT name,age FROM members;
+    //WHERE句で絞り込み
+    SELECT * FROM members WHERE age=25;
+    SELECT * FROM members WHERE age>25;
+    SELECT * FROM members WHERE age>25;
+    //~でない
+    SELECT * FROM members WHERE age <> 25;
+    SELECT * FROM members WHERE age > 25 AND age < 40;
+    SELECT * FROM members WHERE age > 25 OR updated <= '2015-02-15';
+    //BETWEEN(端含む)
+    SELECT * FROM members WHERE updated BETWEEN '2015-01-15' AND '2015-02-15';
+    //INに含まれるデータを抽出
+    SELECT * FROM members WHERE depart IN('営業部','人事部');
+    //null判定
+    SELECT * FROM members WHERE updated IS NULL;
+    SELECT * FROM members WHERE updated IS NOT NULL;
+    //あいまい検索(%は0文字以上の任意の文字列を表す)
+    SELECT * FROM members WHERE name LIKE '鈴木%';
+    SELECT * FROM members WHERE name LIKE '%木%';
+    SELECT * FROM members WHERE name LIKE '%田';
+    //北が含まれない
+    SELECT * FROM members WHERE name NOT LIKE '%北%';
+    //ORDER BY(並び替え)
+    //年齢降順(ASC,DESCもケツはC)
+    SELECT * FROM members ORDER BY age DESC;
+    //WHERE句との組み合わせは先にWHERE句
+    SELECT * FROM members WHERE updated IS NOT NULL
+    ORDER BY age ASC;
+    //ORDER BYは複数指定できる
+    SELECT * FROM members ORDER BY age DESC,name ASC;
+    //件数制限(LIMITはMySQL限定)
+    SELECT * FROM members ORDER BY age DESC LIMIT 3;
+    //OFFSET指定
+    SELECT * FROM members ORDER BY age DESC LIMIT 3 OFFSET 1;
+    //UPDATE(更新)
+    UPDATE members SET depart='人事部'
+    WHERE name='鈴木さくら';
+    //SETも列挙可能
+    UPDATE members SET depart='人事部',age=age+1
+    WHERE name='鈴木さくら';
+    //DELETE(削除)(WHERE句を忘れたら大事件)
+    DELETE FROM members WHERE id=3;
+    //集計関数(基本結果は1レコード)
+    //件数
+    SELECT count(*) FROM members;
+    //年齢の平均(aveではないので注意)
+    SELECT avg(age) FROM members;
+    //年齢の最大
+    SELECT max(age) FROM members;
+    //年齢の最小
+    SELECT min(age) FROM members;
+    //年齢の合計
+    SELECT sum(age) FROM members;
+    //GROUP BY(同一項目をまとめる、主に集計関数と共に使う。結果はグループの数だけ)
+    SELECT depart,avg(age) FROM members
+    GROUP BY depart;
+    //HAVING(GROUP BYした結果に対する絞り込み)
+    SELECT depart,avg(age) FROM members
+    GROUP BY depart
+    HAVING avg(age) >=30;           
+
+
+
+    MySQLを使って以下の手順で作業を進めよ。
+
+●lesson_appデータベースを文字コードUTF-8で作成する。
+
+CREATE DATABASE lesson_app
+DEFAULT CHARACTER SET utf8;
+●lesson_appにbooksテーブルを作成する。カラム構成は以下
+id 整数　主キー　自動連番
+category 可変長文字列(30) デフォルト値 未分類
+title 可変長文字列(255) NOTNULL制約
+price 整数
+updated 日付
+
+CREATE TABLE books(
+id INT PRIMARY KEY AUTO_INCREMENT,
+category VARCHAR(30) DEFAULT '未分類',
+title VARCHAR(255) NOT NULL,
+price INT,
+updated DATE
+);
+●booksテーブルに以下のデータを挿入する。(コピペしてよい)
+
+INSERT INTO books VALUES
+(1,'雑誌','ジャンプ',300,'2018-08-31'),
+(2,'雑誌','サンデー',290,'2018-08-31'),
+(3,'漫画','タッチ',620,'2000-01-11'),
+(4,'漫画','ドラゴンボール',580,'1982-12-11'),
+(5,'漫画','北斗の拳',430,'1983-02-27'),
+(6,'小説','ノルウェイの森',1700,'1987-05-26'),
+(7,'小説','海辺のカフカ',1820,'2004-08-15'),
+(8,'小説','騎士団長殺し',1830,'2017-03-10'),
+(9,null,'君が僕を知ってる',960,null),
+(10,null,'この世に猫がいなかったら',1200,'2016-11-01'),
+(11,null,'花図鑑',2600,'2018-09-01'),
+(12,null,'スキー入門',1340,'2018-09-01'),
+(13,null,'必勝麻雀',1420,'2018-09-01');
+上記で作成したテーブルにおいて以下の処理を実現するSQL文を記せ。
+1.全てのデータを抽出せよ。
+
+SELECT * FROM books;
+2.以下の本を追加せよ。’漫画’、’アラレちゃん’、400,’1978-12-11′
+
+INSERT INTO books(category,title,price,updated)
+VALUES('漫画','アラレちゃん',400,'1978-12-11');
+3.idが10のデータのカテゴリーを小説にせよ。
+
+UPDATE books SET category='小説'
+WHERE id=10;
+4.タイトルに図鑑が入っている本を削除せよ。
+
+DELETE FROM books
+WHERE title LIKE '%図鑑%';
+5.カテゴリーが小説のデータを抽出せよ。取得カラムはtitle,priceとすること
+
+SELECT title,price FROM books
+WHERE category='小説';
+6.カテゴリーがnullの項目を’未分類’に変更せよ。
+
+UPDATE books SET category='未分類'
+WHERE category IS NULL;
+7.次のデータを挿入せよ。’Java入門’,1800
+
+INSERT INTO books(title,price)
+VALUES ('Java入門',1800);
+8.値段の高い順に抽出せよ。
+
+SELECT * FROM books
+ORDER BY price DESC;
+9.登録件数を抽出せよ。
+
+SELECT count(*) FROM books;
+10.1000円以上の本を抽出せよ。
+
+SELECT * FROM books
+WHERE price>=1000;
+11.カテゴリーが漫画のデータを一律50円値下げせよ。
+
+UPDATE books SET price = price-50
+WHERE category='漫画';
+12.一番値段の高い本を抽出せよ。取得列はtitle,priceとすること。
+
+SELECT title,price FROM books
+ORDER BY price DESC LIMIT 1;
+13.すべての本の価格の平均を求めよ。
+
+SELECT avg(price) FROM books;
+14.更新日が1980~1990年のデータを日付昇順で抽出せよ。
+
+SELECT * FROM books
+WHERE updated BETWEEN '1980-01-01' AND '1990-12-31'
+ORDER BY updated ASC;
+15.値段の安い本３冊を抽出せよ。
+
+SELECT * FROM books
+ORDER BY price ASC
+LIMIT 3;
+16.値段が２番目に高い本を抽出せよ。取得カラムはtitle,priceとする。
+
+SELECT title,price FROM books
+ORDER BY price DESC
+LIMIT 1 OFFSET 1;
+17.更新日がnullでなく、カテゴリーが小説でないデータを抽出せよ。
+
+SELECT * FROM books
+WHERE updated IS NOT NULL
+AND category <> '小説';
+18.カテゴリーが未分類の本を抽出せよ。
+
+SELECT * FROM books
+WHERE category='未分類';
+19.カテゴリー毎の平均価格を求め、降順に抽出せよ。取得カラムはcategory,avg(price)とすること。
+
+SELECT category,avg(price) FROM books
+GROUP BY category
+ORDER BY avg(price) DESC;
+20.カテゴリー毎の合計価格を求め,合計価格が5000円以上の項目を抽出せよ。取得カラムはcategory,sum(price)とする。
+
+ソースを表示印刷SyntaxHighlighterについて
+SELECT category,sum(price) FROM books
+GROUP BY category
+HAVING sum(price) >=5000;
+
+
+MySQLを基本文法の2回目だ。
+MySQLを使いこなす上で必須の技数々。
+
+以下の内容を実行を伴って行いたい人は、以下ファイルをダウンロードして。インポートし、データベースを作成した後行うとよい。
+アイコン
+下からダウンロード
+ 1 ファイル  2.41 KB
+●カラム別名 AS(取得項目名をAS句の内容で表示)
+
+/*(カラム別名は文字列であってもコーテーションで囲う必要ない)*/
+SELECT title AS タイトル,price AS 価格 FROM books;
+●重複削除 DISTINCT(重複をなくした状態で取得する)
+
+/*カテゴリー一覧を取得できる*/
+SELECT DISTINCT category FROM books;
+●取得カラムに書ける色々
+
+/*priceカラム、priceカラムに100足した値、固定値*/
+SELECT price,price+100,'固定値' FROM books;
+●切り捨て floor()
+
+/*計算結果の小数部を切り捨てる*/
+SELECT floor(120*1.08);
+●３桁毎,挿入 format(値,小数点以下の桁数)
+
+SELECT format(12345678,0);
+●CASE WHEN (switch case的に分岐できる)
+
+/*categoryによって販売階を表示*/
+SELECT title AS 書名,category AS 分類,
+CASE category WHEN '雑誌' THEN '1F'
+WHEN '漫画' THEN '1F'
+ELSE '2F' 
+END AS 階
+FROM books;
+
+
+●CASE WHEN (if的に分岐できる)
+
+SELECT title AS 書名,price AS 価格,
+CASE WHEN price < 500 THEN 'えんぴつ'
+WHEN price < 1000 THEN 'キーホルダー'
+WHEN price < 3000 THEN 'ポスター'
+END AS プレゼント
+FROM books;
+
+
+●文字数 char_length()
+
+SELECT title,char_length(title) FROM books;
+●現在日の入力 curdate()
+
+INSERT INTO books(title,price,updated)
+VALUES('SQL入門',2800,curdate());
+●現在日時の入力 now()
+
+SELECT now();
+
+
+●文字列連結 concat(文字列,文字列,･・・)
+
+/*数値が入っている場合自動的に文字列に変換*/
+SELECT concat(title,':',price,'円') FROM books;
+●最初のnullでない値を返す。 coalesce(引数,引数,･・・)
+
+/*updatedがnullのカラムは'更新日未記入'と表示*/
+SELECT title,coalesce(updated,'更新日未記入')
+FROM books;
+●副問い合わせ(最初にカッコ内の処理を行いその結果を利用)
+
+/*先にmaxを求めてその値を利用*/
+SELECT title,price FROM books 
+WHERE price=(SELECT max(price) FROM books);
+●●テーブルの結合
+以下の内容を実行を伴いながら行いたい人は、下からダウンロードした後インポートしてから行う。
+アイコン
+下からダウンロード
+ 1 ファイル  2.21 KB
+●内部結合 JOIN(それぞれのテーブルの指定した列の値が一致するデータだけを取得)
+/*cdsの目蒲線物語や、categoryのDANCEは表示されていない*/
+
+SELECT * FROM cds
+JOIN categories
+ON cds.cat_id=categories.id;
+●左結合 LEFT JOIN(左結合はそれぞれのテーブルの指定した列の値が一致するデータに加えて基準テーブルにしか存在しないデータについても取得する(下の例だとcdsのデータは全部表示する))
+/*cdsの目蒲線物語が表示される*/
+
+SELECT * FROM cds
+LEFT JOIN categories
+ON cds.cat_id=categories.id;
+●右結合 RIGHT JOIN(右結合はそれぞれのテーブルの指定した列の値が一致するデータに加えて結合するテーブルにしか存在しないデータについても取得する(下の例だとcategoriesのデータは全部表示する))
+/*categoriesのDANCEが表示される*/
+
+SELECT * FROM cds
+RIGHT JOIN categories
+ON cds.cat_id=categories.id;
+●取得カラムの指定
+/*原則テーブル名.カラム名で指定する*/
+
+SELECT cds.title,categories.category,cds.price FROM cds
+LEFT JOIN categories
+ON cds.cat_id=categories.id;
+●テーブルに別名
+/*テーブルに別名をつけることができ、以後その文脈中では別名をつかう(元のテーブル名はつかえない)*/
+
+ソースを表示印刷SyntaxHighlighterについて
+SELECT cd.title,cat.category,cd.price FROM cds AS cd
+LEFT JOIN categories AS cat
+ON cd.cat_id=cat.id;
+
+
+
+MySQLを使って以下の手順で作業を進めよ。
+
+●sales_appデータベースを文字コードUTF-8で作成する。
+
+CREATE DATABASE sales_app
+DEFAULT CHARACTER SET utf8;
+●sales_appにdepsテーブルを作成する。カラム構成は以下
+id 整数　主キー　自動連番
+dep 可変長文字列(30) NOT NULL
+
+CREATE TABLE deps(
+id INT PRIMARY KEY AUTO_INCREMENT,
+dep VARCHAR(30) NOT NULL
+);
+●depsテーブルに以下の情報を追加する(コピペしてよい)
+
+INSERT INTO deps(dep) VALUES
+('営業1課'),('営業2課'),('経理部'),('総務部'),('人事部');
+●sales_appにempsテーブルを作成する。カラム構成は以下
+id 整数　主キー　自動連番
+name 可変長文字列(30) NOT NULL,
+age 整数
+dep_id 整数
+
+CREATE TABLE emps(
+id INT PRIMARY KEY AUTO_INCREMENT,
+name VARCHAR(30) NOT NULL,
+age INT,
+dep_id INT
+);
+●empsテーブルに以下のデータを挿入する。(コピペしてよい)
+
+INSERT INTO emps(name,age,dep_id) VALUES
+('佐藤',40,3),
+('高橋',28,1),
+('中川',20,2),
+('渡辺',20,1),
+('西澤',35,4),
+('中村',26,2),
+('田中',24,2),
+('鈴木',42,5);
+●sales_appにsalesテーブルを作成する。カラム構成は以下
+id 整数　主キー　自動連番
+emp_id INT,
+sale INT,
+s_date DATE
+
+CREATE TABLE sales(
+id INT PRIMARY KEY AUTO_INCREMENT,
+emp_id INT,
+sale INT,
+s_date DATE
+);
+●salesテーブルに以下のデータを挿入する。(コピペしてよい)
+
+INSERT INTO sales(emp_id,sale,s_date) VALUES
+(3,100,'2017-09-01'),
+(8,63,'2017-09-01'),
+(2,82,'2017-09-01'),
+(1,32,'2017-09-02'),
+(5,98,'2017-09-02'),
+(3,87,'2017-09-03'),
+(3,66,'2017-09-03'),
+(1,42,'2017-09-03'),
+(6,164,'2017-09-04'),
+(2,28,'2017-09-04'),
+(3,35,'2017-09-04'),
+(5,43,'2017-09-05'),
+(4,26,'2017-09-05'),
+(3,83,'2017-09-05'),
+(8,55,'2017-09-05'),
+(5,29,'2017-09-06');
+上記で作成したテーブルにおいて以下の処理を実現するSQL文を記せ。
+●empsテーブルに、山田,22,1を追加せよ。
+
+●depsの全てのデータを抽出せよ。
+
+●empsテーブルidが5のデータの年齢を１加えよ。
+
+●salesテーブルidが16のデータを削除せよ。
+
+●salesテーブル。sale降順に並び替えろ。
+
+●empsのデータを年齢降順に抽出せよ。取得項目は、名前、年齢とする。
+
+●empsテーブル。年齢が30以上でdep_idが４でないデータを抽出。
+
+●empsテーブル。名前に[中]が含まれない人を抽出せよ。
+
+●salesテーブル。2017-09-01~2017-09-03のデータを抽出する。
+
+●salesとempsを内部結合。売上を記録した人の名前を抽出。重複は除外すること。
+
+●depsテーブル。idの1,2は本社ビル7F,3,4は本社ビル6F,その他は本社ビル5Fである。
+以下の項目名で取得せよ。部署名、所在地
+
+●empsテーブル。全件抽出。ただし年齢が23歳以下の人には名前の前に(新)を付与すること。
+取得項目は名前、年齢
+
+●salesテーブル。sale昇順に並び替え。saleに1000を掛け３桁毎にカンマを挿入し末尾に円を付与したものを売上高とする。
+取得項目は日付、売上高
+
+●salesテーブル。売上の合計、最大、最小、平均、データ数を表示する。
+
+●salesテーブル。2017-09-03の日別売上を求めよ。項目名は日付、件数、日別売上とする。
+●depsとempsを内部結合し年齢昇順に抽出せよ。ただし年齢は30歳未満。取得項目は、名前、年齢、部署名とする。年齢が同じ場合は部署名を辞書順に並べること。
+
+
+●salesとempsとdepsを内部結合し、取得項目名を日付,名前,年齢,部署名,売上高として全件抽出せよ。
+
+●salesとempsとdepsを左結合し、総売上個人ランキングトップ３を降順で取得する。取得項目は名前、部署名、総売上とする。
+
+●まだ売上を上げていない社員名を抽出せよ。
+  </code></pre>
+<p><li><a href="javaindex.html">javaで学ぼう目次に進む</a></li></p>
+<p><li><a href="scindex.html">喫茶店で日曜コード目次に進む</a></li></p>
+<p><li><a href="principle.html">ココンカ塾創立理念に進む</a></li></p>
+  　<li><a href="index2.php">質問&自作問題投稿</a></li>　　
+</body>
+</html>
