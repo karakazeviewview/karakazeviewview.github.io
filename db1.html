@@ -430,45 +430,120 @@ INSERT INTO sales(emp_id,sale,s_date) VALUES
 上記で作成したテーブルにおいて以下の処理を実現するSQL文を記せ。
 ●empsテーブルに、山田,22,1を追加せよ。
 
+INSERT INTO emps(name,age,dep_id) 
+VALUES('山田',22,1)
 ●depsの全てのデータを抽出せよ。
 
+SELECT * FROM deps;
 ●empsテーブルidが5のデータの年齢を１加えよ。
 
+UPDATE emps SET age=age+1
+WHERE id=5;
 ●salesテーブルidが16のデータを削除せよ。
 
+DELETE FROM sales WHERE id=16;
 ●salesテーブル。sale降順に並び替えろ。
 
+SELECT * FROM sales 
+ORDER BY sale DESC;
 ●empsのデータを年齢降順に抽出せよ。取得項目は、名前、年齢とする。
 
+SELECT name AS 名前,age AS 年齢 FROM emps
+ORDER BY age DESC;
 ●empsテーブル。年齢が30以上でdep_idが４でないデータを抽出。
 
+SELECT * FROM emps
+WHERE age>=30
+AND dep_id <> 4;
 ●empsテーブル。名前に[中]が含まれない人を抽出せよ。
 
+SELECT * FROM emps 
+WHERE name NOT LIKE '%中%';
 ●salesテーブル。2017-09-01~2017-09-03のデータを抽出する。
 
+SELECT * FROM sales 
+WHERE s_date BETWEEN '2017-09-01' AND '2017-09-03';
 ●salesとempsを内部結合。売上を記録した人の名前を抽出。重複は除外すること。
 
+SELECT DISTINCT e.name 
+FROM sales AS s 
+JOIN emps AS e 
+ON s.emp_id=e.id
 ●depsテーブル。idの1,2は本社ビル7F,3,4は本社ビル6F,その他は本社ビル5Fである。
 以下の項目名で取得せよ。部署名、所在地
 
+SELECT dep AS 部署名, 
+CASE WHEN id IN(1,2) THEN '本社ビル7F'
+WHEN id IN(3,4) THEN '本社ビル6F' 
+ELSE '本社ビル5F' 
+END AS 所在地 FROM deps;
 ●empsテーブル。全件抽出。ただし年齢が23歳以下の人には名前の前に(新)を付与すること。
 取得項目は名前、年齢
 
+SELECT 
+CASE WHEN age<=23 THEN concat('(新)',name)
+ELSE name
+END AS 名前, 
+age AS 年齢
+FROM emps;
 ●salesテーブル。sale昇順に並び替え。saleに1000を掛け３桁毎にカンマを挿入し末尾に円を付与したものを売上高とする。
 取得項目は日付、売上高
 
+SELECT s_date AS 日付,concat(format(sale*1000,0),'円') AS 売上高 
+FROM sales
+ORDER BY sale;
 ●salesテーブル。売上の合計、最大、最小、平均、データ数を表示する。
 
+SELECT sum(sale),max(sale),min(sale),avg(sale),count(*)
+FROM sales;
 ●salesテーブル。2017-09-03の日別売上を求めよ。項目名は日付、件数、日別売上とする。
+
+SELECT s_date AS 日付,
+count(*) AS 件数,
+sum(sale) AS 日別売上 
+FROM sales 
+GROUP BY s_date 
+HAVING s_date='2017-09-03'
+(whereで先に絞りんこんでからGROUP BYでもOK)
+
 ●depsとempsを内部結合し年齢昇順に抽出せよ。ただし年齢は30歳未満。取得項目は、名前、年齢、部署名とする。年齢が同じ場合は部署名を辞書順に並べること。
 
 
+SELECT e.name AS 名前,e.age AS 年齢,d.dep AS 部署名
+FROM deps AS d
+JOIN emps AS e
+ON d.id=e.dep_id
+WHERE e.age<30
+ORDER BY age ASC,dep ASC;
 ●salesとempsとdepsを内部結合し、取得項目名を日付,名前,年齢,部署名,売上高として全件抽出せよ。
 
+SELECT s.s_date AS 日付,
+e.name AS 名前,
+e.age AS 年齢,
+d.dep AS 部署名,
+s.sale AS 売上高
+FROM sales AS s
+JOIN emps AS e
+ON s.emp_id=e.id
+JOIN deps AS d
+ON e.dep_id = d.id;
 ●salesとempsとdepsを左結合し、総売上個人ランキングトップ３を降順で取得する。取得項目は名前、部署名、総売上とする。
 
+SELECT e.name AS 名前,
+d.dep AS 部署名,
+sum(s.sale) AS 総売上 
+FROM sales AS s
+LEFT JOIN emps AS e
+ON s.emp_id=e.id
+LEFT JOIN deps AS d
+ON e.dep_id=d.id
+GROUP BY s.emp_id
+ORDER BY 総売上 DESC
+LIMIT 3;
 ●まだ売上を上げていない社員名を抽出せよ。
 
+SELECT name FROM emps
+WHERE id NOT IN(SELECT emp_id FROM sales);
 
 <h1>まとめ</h1>
 オフセット、オーダーバイ、リミットをまとめておぼえる。
